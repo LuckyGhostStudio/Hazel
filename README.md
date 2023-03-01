@@ -7,14 +7,19 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 ### Hazel
 
 - 引擎核心
-- 编译后生成静态库文件和动态链接库（.dll）文件
-- 在运行时链接到Sandbox
+- 编译后生成静态库文件
+- 链接到Sandbox
 - 由Sandbox调用
+
+### HazelEditor
+
+- 编辑器
+- 构建应用程序或游戏
 
 ### Sandbox
 
-- 引擎应用启动项
-- 最终编译为exe文件
+- 测试项目
+- 测试应用程序或游戏
 
 ## 开发过程
 

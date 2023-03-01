@@ -44,7 +44,7 @@ namespace Hazel
 		/// <returns>事件处理结果</returns>
 		bool OnWindowResize(WindowResizeEvent& e);
 	public:
-		Application();
+		Application(const std::string& name = "Hazel App");
 		virtual ~Application();
 
 		/// <summary>

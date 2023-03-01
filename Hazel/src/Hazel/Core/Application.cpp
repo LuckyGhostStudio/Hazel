@@ -14,14 +14,14 @@ namespace Hazel
 
 	Application* Application::s_Instance = nullptr;	//单例
 
-	Application::Application()
+	Application::Application(const std::string& name)
 	{
 		HZ_PROFILE_FUNCTION();
 
 		HZ_CORE_ASSERT(!s_Instance, "Application already exisit!");	//Application已存在
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());	//创建窗口
+		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));	//创建窗口
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));		//设置回调函数
 
 		Renderer::Init();	//初始化渲染器

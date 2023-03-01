@@ -2,8 +2,6 @@
 
 #include "Hazel.h"
 
-#include "ParticleSystem.h"
-
 /// <summary>
 /// 2D渲染测试层
 /// </summary>
@@ -15,7 +13,6 @@ private:
 	//Temp
 	Hazel::Ref<Hazel::VertexArray> m_SquareVA;			//正方形顶点数组
 	Hazel::Ref<Hazel::Shader> m_FlatColorShader;		//正方形着色器
-	Hazel::Ref<Hazel::Framebuffer> m_Framebuffer;		//帧缓冲区
 
 	Hazel::Ref<Hazel::Texture2D> m_CheckerboardTexture;	//棋盘纹理
 
