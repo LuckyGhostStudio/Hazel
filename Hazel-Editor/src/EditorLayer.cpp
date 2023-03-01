@@ -146,10 +146,22 @@ namespace Hazel
 
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));	//颜色编辑UI
 
-		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();	//颜色缓冲区ID
-		ImGui::Image((void*)textureID, ImVec2{ 320.0f, 180.0f }, ImVec2(0, 1), ImVec2(1, 0));
-
 		ImGui::End();
+
+		//场景视口
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));	//设置Gui窗口样式：边界=0
+		ImGui::Begin("Viewport");
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();			//Gui面板大小
+		//视口大小 != Gui面板大小
+		if (m_ViewportSize != (*(glm::vec2*)&viewportPanelSize)){
+			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);	//重置帧缓冲区大小
+			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };			//视口大小
+			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);	//重置相机大小
+		}
+		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();	//颜色缓冲区ID
+		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::End();
+		ImGui::PopStyleVar();
 
 		ImGui::End();
 	}

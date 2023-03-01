@@ -182,6 +182,8 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - Framebuffer.h/.cpp
 - OpenGLFramebuffer.h/.cpp
 
+### 46. 场景视口
+
 ## 文件说明
 
 ### Hazel 项目
@@ -362,6 +364,28 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - Framebuffer.h/.cpp
 
   帧缓冲区抽象接口。
+
+### Hazel-Editor 项目
+
+#### asserts
+
+- ##### shaders
+
+  着色器文件，包括顶点着色器和片元着色器。
+
+- ##### textures
+
+  贴图文件。
+
+#### src
+
+- HazelEditor.cpp
+
+  编辑器，继承Application，构建应用程序或游戏。
+
+- EditorLayer.h/.cpp
+
+  编辑器层，构建引擎编辑器。
 
 ### Sandbox 项目
 

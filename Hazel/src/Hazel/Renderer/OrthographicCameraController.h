@@ -9,18 +9,6 @@
 namespace Hazel
 {
 	/// <summary>
-	/// 正交相机边界
-	/// </summary>
-	struct OrthographicCameraBounds
-	{
-		float Left, Right;
-		float Bottom, Top;
-
-		float GetWidth() { return Right - Left; }
-		float GetHeight() { return Top - Bottom; }
-	};
-
-	/// <summary>
 	/// 正交相机控制器
 	/// </summary>
 	class OrthographicCameraController
@@ -28,7 +16,6 @@ namespace Hazel
 	private:
 		float m_AspectRatio;				//宽高比（X/Y）
 		float m_ZoomLevel = 1.0f;			//缩放比例（Y）
-		OrthographicCameraBounds m_Bounds;	//正交相机边界
 		OrthographicCamera m_Camera;		//正交相机
 		 
 		bool m_Rotation;				//是否可旋转
@@ -57,23 +44,19 @@ namespace Hazel
 		/// <param name="e">事件</param>
 		void OnEvent(Event& e);
 
+		/// <summary>
+		/// 重置相机大小
+		/// </summary>
+		/// <param name="width">宽</param>
+		/// <param name="height">高</param>
+		void OnResize(float width, float height);
+
 		OrthographicCamera& GetCamera() { return m_Camera; }
 		const OrthographicCamera& GetCamera() const { return m_Camera; }
 
 		float GetZoomLevel() const { return m_ZoomLevel; }
-		void SetZoomLevel(float level) 
-		{ 
-			m_ZoomLevel = level; 
-			CalculateView();
-		}
-
-		const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
+		void SetZoomLevel(float level) { m_ZoomLevel = level; }
 	private:
-		/// <summary>
-		/// 计算视图大小
-		/// </summary>
-		void CalculateView();
-
 		/// <summary>
 		/// 鼠标滚轮滚动
 		/// </summary>

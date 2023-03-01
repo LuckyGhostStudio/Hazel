@@ -7,7 +7,7 @@
 namespace Hazel
 {
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		:m_AspectRatio(aspectRatio), m_Bounds({ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }), m_Camera(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top), m_Rotation(rotation)
+		:m_AspectRatio(aspectRatio), m_Camera( -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 	
 	} 
@@ -56,10 +56,10 @@ namespace Hazel
 		dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FUNC(OrthographicCameraController::OnWindowResized));
 	}
 
-	void OrthographicCameraController::CalculateView()
+	void OrthographicCameraController::OnResize(float width, float height)
 	{
-		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };//设置相机边界
-		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);				//设置投影矩阵
+		m_AspectRatio = width / height;	//设置宽高比
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);	//设置投影矩阵
 	}
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
@@ -68,7 +68,7 @@ namespace Hazel
 
 		m_ZoomLevel -= e.GetYOffset() * 0.5f;	//Y轴缩放比例减小
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);	//缩放>=0.25
-		CalculateView();	//计算视图
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);	//设置投影矩阵
 
 		return false;
 	}
@@ -77,8 +77,7 @@ namespace Hazel
 	{
 		HZ_PROFILE_FUNCTION();
 
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();	//宽高比为 窗口 宽高比
-		CalculateView();	//计算视图
+		OnResize((float)e.GetWidth(), (float)e.GetHeight());	//宽高比为 窗口 宽高比
 
 		return false;
 	}

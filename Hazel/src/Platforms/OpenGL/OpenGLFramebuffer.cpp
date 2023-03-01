@@ -12,11 +12,20 @@ namespace Hazel
 	
 	OpenGLFramebuffer::~OpenGLFramebuffer()
 	{
-		glDeleteFramebuffers(1, &m_RendererID);	//删除帧缓冲区
+		glDeleteFramebuffers(1, &m_RendererID);		//删除帧缓冲区
+		glDeleteTextures(1, &m_ColorAttachment);	//删除颜色缓冲区
+		glDeleteTextures(1, &m_DepthAttachment);	//删除深度缓冲区
 	}
 	
 	void OpenGLFramebuffer::Invalidate()
 	{
+		//帧缓冲区存在
+		if (m_RendererID) {
+			glDeleteFramebuffers(1, &m_RendererID);		//删除帧缓冲区
+			glDeleteTextures(1, &m_ColorAttachment);	//删除颜色缓冲区
+			glDeleteTextures(1, &m_DepthAttachment);	//删除深度缓冲区
+		}
+
 		glCreateFramebuffers(1, &m_RendererID);				//创建帧缓冲区
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);	//绑定帧缓冲区
 
@@ -34,7 +43,6 @@ namespace Hazel
 		glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);		//绑定深度缓冲区
 		//深度缓冲区纹理存储 24位深度缓冲区 8位模板缓冲区
 		glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, m_Specification.Width, m_Specification.Height);
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, m_Specification.Width, m_Specification.Height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment, 0);	//帧缓冲区深度纹理
 
 		//检查帧缓冲区状态
@@ -46,10 +54,19 @@ namespace Hazel
 	void OpenGLFramebuffer::Bind()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);	//绑定帧缓冲区
+		glViewport(0, 0, m_Specification.Width, m_Specification.Height);	//设置视口大小
 	}
 	
 	void OpenGLFramebuffer::Unbind()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);	//解除绑定
+	}
+	
+	void OpenGLFramebuffer::Resize(uint32_t width, uint32_t height)
+	{
+		m_Specification.Width = width;
+		m_Specification.Height = height;
+
+		Invalidate();
 	}
 }

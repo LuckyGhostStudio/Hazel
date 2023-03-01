@@ -31,6 +31,13 @@ namespace Hazel
 		virtual const FramebufferSpecification& GetSpecification() const = 0;
 
 		/// <summary>
+		/// 重置帧缓冲区大小
+		/// </summary>
+		/// <param name="width">宽</param>
+		/// <param name="height">高</param>
+		virtual void Resize(uint32_t width, uint32_t height) = 0;
+
+		/// <summary>
 		/// 创建帧缓冲区
 		/// </summary>
 		/// <param name="spec">帧缓冲区规范</param>
