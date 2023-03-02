@@ -16,6 +16,12 @@ namespace Hazel
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);	//创建帧缓冲区
+
+		m_ActiveScene = CreateRef<Scene>();		//创建场景
+
+		m_SquareEntity = m_ActiveScene->CreateEntity();	//创建正方形实体
+		m_ActiveScene->Reg().emplace<TransformComponent>(m_SquareEntity);	//添加Transform组件
+		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(m_SquareEntity, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));	//添加SpriteRenderer组件
 	}
 
 	void EditorLayer::OnDetach()
@@ -34,29 +40,10 @@ namespace Hazel
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });	//设置清屏颜色
 		RenderCommand::Clear();										//清除
 
-		static float rotation = 0.0f;
-		rotation += 50 * ts;
-
 		Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
+		m_ActiveScene->OnUpdate(ts);	//更新场景
+		Renderer2D::EndScene();			//结束渲染场景
 
-		Renderer2D::DrawRotateQuad({ 1.0f, 1.0f }, { 0.8f, 0.8f }, rotation, { 0.8f, 0.2f, 0.3f, 1.0f });	//绘制四边形
-		Renderer2D::DrawRotateQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, 45.0f, m_CheckerboardTexture);	//绘制四边形
-		Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });	//绘制四边形
-		Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });	//绘制四边形
-		Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);	//绘制四边形
-
-		Renderer2D::EndScene();						//结束渲染场景
-
-		Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
-
-		for (float y = -5.0f; y < 5.0f; y += 0.5f) {
-			for (float x = -5.0f; x < 5.0f; x += 0.5f) {
-				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.6f };
-				Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
-			}
-		}
-
-		Renderer2D::EndScene();						//结束渲染场景
 		m_Framebuffer->Unbind();	//解除绑定帧缓冲区
 	}
 
@@ -107,10 +94,6 @@ namespace Hazel
 			//菜单
 			if (ImGui::BeginMenu("File"))
 			{
-				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
-				// which we can't undo at the moment without finer window depth/z control.
-				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-
 				//菜单项
 				if (ImGui::MenuItem("Exit")) {	//退出
 					Application::GetInstance().Close();	//退出程序
@@ -129,7 +112,8 @@ namespace Hazel
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));	//颜色编辑UI
+		auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;	//正方形颜色
+		ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));	//颜色编辑UI
 
 		ImGui::End();
 
@@ -144,7 +128,7 @@ namespace Hazel
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();			//Gui面板大小
 		//视口大小 != Gui面板大小
-		if (m_ViewportSize != (*(glm::vec2*)&viewportPanelSize)){
+		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0){
 			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);	//重置帧缓冲区大小
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };			//视口大小
 			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);	//重置相机大小

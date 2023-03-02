@@ -186,6 +186,11 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 ### 47. ImGuiLayer事件
 
+### 48. 组件系统
+
+- Scene.h/.cpp
+- Components.h
+
 ## 文件说明
 
 ### Hazel 项目
@@ -226,7 +231,7 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
   定义所有鼠标事件。
 
-##### 内核文件
+##### Core
 
 - Core.h
 
@@ -261,7 +266,7 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
   帧间隔，计算每帧之间的时间间隔。
   
 
-##### 平台文件
+##### Platforms
 
 - WindowsWindow.h/.cpp
 
@@ -313,7 +318,7 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
   ImGui层，渲染ImGui。
 
-##### 渲染文件
+##### Renderer
 
 - GraphicsContext.h
 
@@ -366,6 +371,16 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - Framebuffer.h/.cpp
 
   帧缓冲区抽象接口。
+
+##### Scene
+
+- Scene.h/.cpp
+
+  场景，包括所有的实体对象。
+
+- Components.h
+
+  组件，所有组件。
 
 ### Hazel-Editor 项目
 
