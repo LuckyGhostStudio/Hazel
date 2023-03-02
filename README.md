@@ -184,6 +184,8 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 ### 46. 场景视口
 
+### 47. ImGuiLayer事件
+
 ## 文件说明
 
 ### Hazel 项目
@@ -265,9 +267,9 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
   Windows平台窗口，继承Window，创建GLFW窗口。
   
-- WindowsInput.h./cpp
+- WindowsInput.h.
 
-  WInodws平台输入类，继承Input，实现输入接口。
+  WInodws平台输入。
   
 - OpenGLContext.h/.cpp
 

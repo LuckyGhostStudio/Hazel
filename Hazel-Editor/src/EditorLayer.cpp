@@ -10,8 +10,6 @@ namespace Hazel
 
 	void EditorLayer::OnAttach()
 	{
-		HZ_PROFILE_FUNCTION();
-
 		m_CheckerboardTexture = Texture2D::Create("asserts/textures/Checkerboard.png");			//创建纹理
 
 		FramebufferSpecification fbSpec;
@@ -22,60 +20,48 @@ namespace Hazel
 
 	void EditorLayer::OnDetach()
 	{
-		HZ_PROFILE_FUNCTION();
 
 	}
 
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
-		HZ_PROFILE_FUNCTION();
-
-		{
-			HZ_PROFILE_SCOPE("CameraController::OnUpdate");
+		if (m_ViewportFocused) {	//视口被聚焦
 			m_CameraController.OnUpdate(ts);	//更新相机控制器
 		}
 
 		Renderer2D::ResetStats();	//重置统计数据
-		{
-			HZ_PROFILE_SCOPE("Renderer Preparation");
-			m_Framebuffer->Bind();	//绑定帧缓冲区
-			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });	//设置清屏颜色
-			RenderCommand::Clear();										//清除
-		}
+		m_Framebuffer->Bind();		//绑定帧缓冲区
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });	//设置清屏颜色
+		RenderCommand::Clear();										//清除
 
-		{
-			static float rotation = 0.0f;
-			rotation += 50 * ts;
+		static float rotation = 0.0f;
+		rotation += 50 * ts;
 
-			HZ_PROFILE_SCOPE("Renderer Draw");
-			Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
+		Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
 
-			Renderer2D::DrawRotateQuad({ 1.0f, 1.0f }, { 0.8f, 0.8f }, rotation, { 0.8f, 0.2f, 0.3f, 1.0f });	//绘制四边形
-			Renderer2D::DrawRotateQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, 45.0f, m_CheckerboardTexture);	//绘制四边形
-			Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });	//绘制四边形
-			Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });	//绘制四边形
-			Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);	//绘制四边形
+		Renderer2D::DrawRotateQuad({ 1.0f, 1.0f }, { 0.8f, 0.8f }, rotation, { 0.8f, 0.2f, 0.3f, 1.0f });	//绘制四边形
+		Renderer2D::DrawRotateQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, 45.0f, m_CheckerboardTexture);	//绘制四边形
+		Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });	//绘制四边形
+		Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });	//绘制四边形
+		Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);	//绘制四边形
 
-			Renderer2D::EndScene();						//结束渲染场景
+		Renderer2D::EndScene();						//结束渲染场景
 
-			Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
+		Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
 
-			for (float y = -5.0f; y < 5.0f; y += 0.5f) {
-				for (float x = -5.0f; x < 5.0f; x += 0.5f) {
-					glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.6f };
-					Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
-				}
+		for (float y = -5.0f; y < 5.0f; y += 0.5f) {
+			for (float x = -5.0f; x < 5.0f; x += 0.5f) {
+				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.6f };
+				Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
 			}
-
-			Renderer2D::EndScene();						//结束渲染场景
-			m_Framebuffer->Unbind();	//解除绑定帧缓冲区
 		}
+
+		Renderer2D::EndScene();						//结束渲染场景
+		m_Framebuffer->Unbind();	//解除绑定帧缓冲区
 	}
 
 	void EditorLayer::OnImGuiRender()
 	{
-		HZ_PROFILE_FUNCTION();
-
 		static bool dockSpaceOpen = true;	//dockspace是否打开
 		static bool opt_fullscreen_persistant = true;
 		static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
@@ -131,7 +117,6 @@ namespace Hazel
 				}
 				ImGui::EndMenu();
 			}
-
 			ImGui::EndMenuBar();
 		}
 
@@ -151,6 +136,12 @@ namespace Hazel
 		//场景视口
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));	//设置Gui窗口样式：边界=0
 		ImGui::Begin("Viewport");
+
+		m_ViewportFocused = ImGui::IsWindowFocused();	//当前窗口被聚焦
+		m_ViewportHovered = ImGui::IsWindowHovered();	//鼠标悬停在当前窗口
+
+		Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);	//阻止ImGui事件
+
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();			//Gui面板大小
 		//视口大小 != Gui面板大小
 		if (m_ViewportSize != (*(glm::vec2*)&viewportPanelSize)){

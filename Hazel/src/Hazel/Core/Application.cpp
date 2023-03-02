@@ -66,8 +66,8 @@ namespace Hazel
 
 		//从最顶层向下遍历层栈
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
-			(*--it)->OnEvent(e);	//层获取并处理事件
 			if (e.m_Handled) break;	//事件已处理 跳出
+			(*--it)->OnEvent(e);	//层获取并处理事件
 		}
 	}
 	

@@ -23,6 +23,8 @@ namespace Hazel
 	class Framebuffer
 	{
 	public:
+		virtual ~Framebuffer() = default;
+
 		/// <summary>
 		/// ·µ»ØÑÕÉ«»º³åÇøID
 		/// </summary>

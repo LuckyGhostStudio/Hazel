@@ -29,7 +29,7 @@ namespace Hazel
 		LayerStack m_LayerStack;			//层栈
 
 		float m_LastFrameTime = 0.0f;		//上一帧时间
-
+	private:
 		/// <summary>
 		/// 窗口关闭时调用
 		/// </summary>
@@ -80,6 +80,12 @@ namespace Hazel
 		/// 关闭程序
 		/// </summary>
 		void Close();
+
+		/// <summary>
+		/// 返回ImGui层
+		/// </summary>
+		/// <returns>ImGui层</returns>
+		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 
 		/// <summary>
 		/// 返回Application的窗口
