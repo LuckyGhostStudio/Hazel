@@ -6,24 +6,27 @@
 
 namespace Hazel
 {
+	class Entity;
+
 	/// <summary>
 	/// 场景
 	/// </summary>
 	class Scene
 	{
 	private:
-		entt::registry m_Registry;	//实体集合：实体id集合（unsigned int集合）
+		friend class Entity;	//友元类Entity
+
+		entt::registry m_Registry;	//实体注册表：实体id集合（unsigned int集合）
 	public:
 		Scene();
 		~Scene();
 
-		entt::registry& Reg() { return m_Registry; }
-
 		/// <summary>
 		/// 创建实体
 		/// </summary>
+		/// <param name="name">实体名</param>
 		/// <returns>实体</returns>
-		entt::entity CreateEntity();
+		Entity CreateEntity(const std::string& name = std::string());
 
 		/// <summary>
 		/// 更新：每帧调用

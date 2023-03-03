@@ -191,6 +191,10 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - Scene.h/.cpp
 - Components.h
 
+### 49. 实体
+
+- Entity.h/.cpp
+
 ## 文件说明
 
 ### Hazel 项目
@@ -376,11 +380,15 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 - Scene.h/.cpp
 
-  场景，包括所有的实体对象。
+  场景，包括所有的实体对象id。
 
 - Components.h
 
   组件，所有组件。
+  
+- Entity.h/.cpp
+
+  实体，场景中的物体（实际只保存id），通过id关联所有组件。
 
 ### Hazel-Editor 项目
 

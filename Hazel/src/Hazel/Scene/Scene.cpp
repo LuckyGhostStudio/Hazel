@@ -4,6 +4,7 @@
 #include "Hazel/Renderer/Renderer2D.h"
 
 #include "Components.h"
+#include "Entity.h"
 
 namespace Hazel
 {
@@ -19,9 +20,14 @@ namespace Hazel
 
 	}
 
-	entt::entity Scene::CreateEntity()
+	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return m_Registry.create();	//创建实体
+		Entity entity = { m_Registry.create(), this };		//创建实体
+		entity.AddComponent<TransformComponent>();			//添加Transform组件（默认组件）
+		auto& tag = entity.AddComponent<TagComponent>();	//添加Tag组件（默认组件）
+		tag.Tag = name.empty() ? "Entity" : name;
+
+		return entity;
 	}
 	
 	void Scene::OnUpdate(Timestep ts)

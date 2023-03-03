@@ -19,9 +19,8 @@ namespace Hazel
 
 		m_ActiveScene = CreateRef<Scene>();		//创建场景
 
-		m_SquareEntity = m_ActiveScene->CreateEntity();	//创建正方形实体
-		m_ActiveScene->Reg().emplace<TransformComponent>(m_SquareEntity);	//添加Transform组件
-		m_ActiveScene->Reg().emplace<SpriteRendererComponent>(m_SquareEntity, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));	//添加SpriteRenderer组件
+		m_SquareEntity = m_ActiveScene->CreateEntity("Square");	//创建正方形实体
+		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));	//添加SpriteRenderer组件
 	}
 
 	void EditorLayer::OnDetach()
@@ -112,8 +111,13 @@ namespace Hazel
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		auto& squareColor = m_ActiveScene->Reg().get<SpriteRendererComponent>(m_SquareEntity).Color;	//正方形颜色
+		//if (m_SquareEntity) {	//实体存在
+		ImGui::Separator();	//分隔符
+		ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());			//正方形名字
+		auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;	//正方形颜色
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));	//颜色编辑UI
+		ImGui::Separator();
+		//}
 
 		ImGui::End();
 

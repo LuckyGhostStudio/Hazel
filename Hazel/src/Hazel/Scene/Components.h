@@ -5,6 +5,18 @@
 namespace Hazel
 {
 	/// <summary>
+	/// 标签组件
+	/// </summary>
+	struct TagComponent
+	{
+		std::string Tag;	//标签
+
+		TagComponent() = default;
+		TagComponent(const TagComponent&) = default;
+		TagComponent(const std::string& tag) :Tag(tag) {}
+	};
+
+	/// <summary>
 	/// 转换组件
 	/// </summary>
 	struct TransformComponent
