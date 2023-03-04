@@ -3,6 +3,7 @@
 #include "OrthographicCamera.h"
 #include "Texture.h"
 #include "SubTexture2D.h"
+#include "Hazel/Renderer/Camera.h"
 
 namespace Hazel
 {
@@ -15,12 +16,15 @@ namespace Hazel
 		static void Init();
 
 		static void Shutdown();
+
+		static void BeginScene(const Camera& camera, const glm::mat4& transform);
 		
 		/// <summary>
 		/// 开始渲染场景：设置场景参数
 		/// </summary>
 		/// <param name="camera">相机</param>
 		static void BeginScene(const OrthographicCamera& camera);
+
 
 		/// <summary>
 		/// 结束渲染场景

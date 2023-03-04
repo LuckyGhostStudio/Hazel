@@ -117,10 +117,21 @@ namespace Hazel
 		HZ_PROFILE_FUNCTION();
 	}
 
+	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
+	{
+		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);	//vp = p * v
+
+		s_Data.TextureShader->Bind();		//绑定Texture着色器
+		s_Data.TextureShader->SetMat4("u_ViewProjectionMatrix", viewProj);	//设置vp矩阵
+
+		s_Data.QuadIndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureSlotIndex = 1;
+	}
+
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		HZ_PROFILE_FUNCTION();
-
 		s_Data.TextureShader->Bind();		//绑定Texture着色器
 		s_Data.TextureShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());		//设置vp矩阵
 
@@ -132,8 +143,6 @@ namespace Hazel
 
 	void Renderer2D::EndScene()
 	{
-		HZ_PROFILE_FUNCTION();
-
 		uint32_t dataSize = (uint32_t)s_Data.QuadVertexBufferPtr - (uint32_t)s_Data.QuadVertexBufferBase;	//数据大小（字节）
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);	//设置顶点缓冲区数据
 

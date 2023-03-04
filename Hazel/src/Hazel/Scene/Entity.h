@@ -12,7 +12,7 @@ namespace Hazel
 	class Entity
 	{
 	private:
-		entt::entity m_EntityHandle{ 0 };	//实体ID
+		entt::entity m_EntityHandle{ entt::null };	//实体ID
 		Scene* m_Scene = nullptr;			//实体所属场景
 	public:
 		Entity() {}
@@ -70,6 +70,6 @@ namespace Hazel
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);	//移除m_Scene场景中m_EntityHandle的T类型组件
 		}
 
-		//operator bool() const { return m_EntityHandle != 0; }
+		operator bool() const { return m_EntityHandle != entt::null; }
 	};
 }

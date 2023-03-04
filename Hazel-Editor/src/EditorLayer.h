@@ -21,6 +21,7 @@ namespace Hazel
 
 		Ref<Scene> m_ActiveScene;	//活动场景
 		Entity m_SquareEntity;		//正方形实体
+		Entity m_CameraEntity;		//相机实体
 
 		bool m_ViewportFocused = false;				//视口被聚焦
 		bool m_ViewportHovered = false;				//鼠标悬停在视口

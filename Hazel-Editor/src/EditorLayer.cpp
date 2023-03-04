@@ -21,6 +21,9 @@ namespace Hazel
 
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");	//创建正方形实体
 		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));	//添加SpriteRenderer组件
+
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
+		m_CameraEntity.AddComponent<CameraComponent>();
 	}
 
 	void EditorLayer::OnDetach()
@@ -30,6 +33,16 @@ namespace Hazel
 
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
+		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
+			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+		{
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);	//重置帧缓冲区大小
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);				//重置相机大小
+
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);	//重置视口大小
+		}
+
 		if (m_ViewportFocused) {	//视口被聚焦
 			m_CameraController.OnUpdate(ts);	//更新相机控制器
 		}
@@ -39,9 +52,9 @@ namespace Hazel
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });	//设置清屏颜色
 		RenderCommand::Clear();										//清除
 
-		Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
+		//Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
 		m_ActiveScene->OnUpdate(ts);	//更新场景
-		Renderer2D::EndScene();			//结束渲染场景
+		//Renderer2D::EndScene();			//结束渲染场景
 
 		m_Framebuffer->Unbind();	//解除绑定帧缓冲区
 	}
@@ -111,13 +124,20 @@ namespace Hazel
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		//if (m_SquareEntity) {	//实体存在
-		ImGui::Separator();	//分隔符
-		ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());			//正方形名字
-		auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;	//正方形颜色
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));	//颜色编辑UI
-		ImGui::Separator();
-		//}
+		if (m_SquareEntity) {	//实体不为空
+			ImGui::Separator();	//分隔符
+			ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());			//正方形名字
+			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;	//正方形颜色
+			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));	//颜色编辑UI
+			ImGui::Separator();
+		}
+
+		auto& camera = m_CameraEntity.GetComponent<CameraComponent>().Camera;
+		float size = camera.GetOrthographicSize();
+		ImGui::Text("Main Camera");
+		if (ImGui::DragFloat("Size", &size)) {
+			camera.SetOrthographicSize(size);
+		}
 
 		ImGui::End();
 
@@ -131,12 +151,9 @@ namespace Hazel
 		Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);	//阻止ImGui事件
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();			//Gui面板大小
-		//视口大小 != Gui面板大小
-		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0){
-			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);	//重置帧缓冲区大小
-			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };			//视口大小
-			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);	//重置相机大小
-		}
+
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };			//视口大小
+
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();	//颜色缓冲区ID
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::End();

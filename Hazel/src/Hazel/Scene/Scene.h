@@ -16,7 +16,9 @@ namespace Hazel
 	private:
 		friend class Entity;	//友元类Entity
 
-		entt::registry m_Registry;	//实体注册表：实体id集合（unsigned int集合）
+		entt::registry m_Registry;		//实体注册表：实体id集合（unsigned int集合）
+		uint32_t m_ViewportWidth = 0;	//场景视口宽
+		uint32_t m_ViewportHeight = 0;	//场景视口高
 	public:
 		Scene();
 		~Scene();
@@ -33,5 +35,12 @@ namespace Hazel
 		/// </summary>
 		/// <param name="ts">帧间隔</param>
 		void OnUpdate(Timestep ts);
+
+		/// <summary>
+		/// 重置视口大小：视口改变时调用
+		/// </summary>
+		/// <param name="width">宽</param>
+		/// <param name="height">高</param>
+		void OnViewportResize(uint32_t width, uint32_t height);
 	};
 }

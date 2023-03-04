@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include "SceneCamera.h"
+
 namespace Hazel
 {
 	/// <summary>
@@ -41,5 +43,18 @@ namespace Hazel
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) :Color(color) {}
+	};
+
+	/// <summary>
+	/// 相机组件
+	/// </summary>
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool Primary = true;			//是否是主相机
+		bool FixedAspectRatio = false;	//是否固定宽高比
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
 	};
 }
