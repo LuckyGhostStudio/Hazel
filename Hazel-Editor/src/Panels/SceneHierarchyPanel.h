@@ -14,13 +14,19 @@ namespace Hazel
 	{
 	private:
 		Ref<Scene> m_Context;		//面板显示的场景
-		Entity m_SelectionContext;	//被选择中实体
+		Entity m_SelectionContext;	//被选中的实体
 
 		/// <summary>
 		/// 绘制实体结点
 		/// </summary>
 		/// <param name="entity">实体</param>
 		void DrawEntityNode(Entity entity);
+
+		/// <summary>
+		/// 绘制实体的所有组件
+		/// </summary>
+		/// <param name="entity">实体</param>
+		void DrawComponents(Entity entity);
 	public:
 		SceneHierarchyPanel() = default;
 
