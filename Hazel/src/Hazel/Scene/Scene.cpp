@@ -30,6 +30,18 @@ namespace Hazel
 	
 	void Scene::OnUpdate(Timestep ts)
 	{
+		//遍历所有拥有脚本组件的实体，调用each内的函数
+		m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nsc)
+		{
+			//脚本未实例化
+			if (!nsc.Instance) {
+				nsc.InstantiateFunction();			//实例化脚本
+				nsc.Instance->m_Entity = Entity{ entity, this };	//设置脚本所属的实体
+				nsc.OnCreateFunction(nsc.Instance);	//调用脚本的OnCreate函数
+			}
+			nsc.OnUpdateFunction(nsc.Instance, ts);	//调用脚本的OnOpdate函数
+		});
+
 		Camera* mainCamera = nullptr;	//主相机
 		glm::mat4* cameraTransform = nullptr;
 

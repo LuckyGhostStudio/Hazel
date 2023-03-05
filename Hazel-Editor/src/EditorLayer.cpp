@@ -24,6 +24,41 @@ namespace Hazel
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera");
 		m_CameraEntity.AddComponent<CameraComponent>();
+
+		class CameraController :public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+				std::cout << "OnCreate" << std::endl;
+			}
+
+			void OnUpdate(Timestep ts)
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed((int)KeyCode::W)) {
+					transform[3][1] += speed * ts;
+				}
+				if (Input::IsKeyPressed((int)KeyCode::S)) {
+					transform[3][1] -= speed * ts;
+				}
+				if (Input::IsKeyPressed((int)KeyCode::A)) {
+					transform[3][0] -= speed * ts;
+				}
+				if (Input::IsKeyPressed((int)KeyCode::D)) {
+					transform[3][0] += speed * ts;
+				}
+			}
+
+			void OnDestroy()
+			{
+				
+			}
+		};
+
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();	//°ó¶¨CameraController½Å±¾
 	}
 
 	void EditorLayer::OnDetach()
