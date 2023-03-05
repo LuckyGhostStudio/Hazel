@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hazel.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Hazel
 {
@@ -28,6 +29,8 @@ namespace Hazel
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };	//视口大小
 
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
+
+		SceneHierarchyPanel m_SceneHierarchyPanel;	//场景对象层次面板
 	public:
 		EditorLayer();
 		virtual ~EditorLayer() = default;

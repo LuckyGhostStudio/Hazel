@@ -204,6 +204,10 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 - ScriptableEntity.h
 
+### 52. 场景Hierarchy面板
+
+- SceneHierarchyPanel.h/.cpp
+
 ## 文件说明
 
 ### Hazel 项目
@@ -432,6 +436,10 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - EditorLayer.h/.cpp
 
   编辑器层，构建引擎编辑器。
+
+- SceneHierarchyPanel.h/.cpp
+
+  场景物体层级面板，显示所有场景物体及其层级关系。
 
 ### Sandbox 项目
 

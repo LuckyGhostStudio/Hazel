@@ -66,12 +66,9 @@ namespace Hazel
 	{
 		ScriptableEntity* Instance = nullptr;	//可脚本化实体实例：用于调用脚本内的函数
 
-		std::function<void()> InstantiateFunction;		//实例化函数：用来实例化ScriptableEntity脚本
-		std::function<void()> DestroyInstanceFunction;	//销毁实例函数：用来销毁ScriptableEntity脚本的实例
+		ScriptableEntity* (*InstantiateScript)();	//实例化脚本函数：用来实例化ScriptableEntity脚本
 
-		std::function<void(ScriptableEntity*)> OnCreateFunction;			//调用脚本OnCreate函数的函数
-		std::function<void(ScriptableEntity*)> OnDestroyFunction;			//调用脚本OnDestroy函数的函数
-		std::function<void(ScriptableEntity*, Timestep)> OnUpdateFunction;	//调用脚本OnUpdate函数的函数
+		void (*DestroyScript)(NativeScriptComponent*);	//销毁脚本函数：用来销毁ScriptableEntity脚本的实例
 
 		/// <summary>
 		/// 绑定T类型的脚本到脚本组件
@@ -80,12 +77,8 @@ namespace Hazel
 		template<typename T>
 		void Bind()
 		{
-			InstantiateFunction = [&]() { Instance = new T(); };							//实例化脚本类
-			DestroyInstanceFunction = [&]() { delete (T*)Instance; Instance = nullptr; };	//销毁脚本类的实例
-
-			OnCreateFunction = [](ScriptableEntity* instance) {((T*)instance)->OnCreate(); };
-			OnDestroyFunction = [](ScriptableEntity* instance) {((T*)instance)->OnDestroy(); };
-			OnUpdateFunction = [](ScriptableEntity* instance, Timestep ts) {((T*)instance)->OnUpdate(ts); };
+			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };	//实例化脚本类
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };	//销毁脚本类的实例
 		}
 	};
 }

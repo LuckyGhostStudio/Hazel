@@ -38,16 +38,16 @@ namespace Hazel
 				auto& transform = GetComponent<TransformComponent>().Transform;
 				float speed = 5.0f;
 
-				if (Input::IsKeyPressed((int)KeyCode::W)) {
+				if (Input::IsKeyPressed(KeyCode::W)) {
 					transform[3][1] += speed * ts;
 				}
-				if (Input::IsKeyPressed((int)KeyCode::S)) {
+				if (Input::IsKeyPressed(KeyCode::S)) {
 					transform[3][1] -= speed * ts;
 				}
-				if (Input::IsKeyPressed((int)KeyCode::A)) {
+				if (Input::IsKeyPressed(KeyCode::A)) {
 					transform[3][0] -= speed * ts;
 				}
-				if (Input::IsKeyPressed((int)KeyCode::D)) {
+				if (Input::IsKeyPressed(KeyCode::D)) {
 					transform[3][0] += speed * ts;
 				}
 			}
@@ -58,7 +58,9 @@ namespace Hazel
 			}
 		};
 
-		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();	//绑定CameraController脚本
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();	//添加脚本组件 并 绑定CameraController脚本
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnDetach()
@@ -149,6 +151,8 @@ namespace Hazel
 			}
 			ImGui::EndMenuBar();
 		}
+
+		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::Begin("Settings");
 

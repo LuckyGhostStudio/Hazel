@@ -13,6 +13,8 @@ namespace Hazel
 		friend class Scene;
 		Entity m_Entity;	//脚本挂载的实体
 	public:
+		virtual ~ScriptableEntity() {}
+
 		/// <summary>
 		/// 返回T类型组件
 		/// </summary>
@@ -23,5 +25,21 @@ namespace Hazel
 		{
 			return m_Entity.GetComponent<T>();
 		}
+	protected:
+		/// <summary>
+		/// 实体创建时调用
+		/// </summary>
+		virtual void OnCreate() {}
+
+		/// <summary>
+		/// 实体创建后每帧调用
+		/// </summary>
+		/// <param name="ts">帧间隔</param>
+		virtual void OnUpdate(Timestep ts) {}
+
+		/// <summary>
+		/// 实体销毁时调用
+		/// </summary>
+		virtual void OnDestroy() {}
 	};
 }

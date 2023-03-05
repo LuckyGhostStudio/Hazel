@@ -35,11 +35,12 @@ namespace Hazel
 		{
 			//脚本未实例化
 			if (!nsc.Instance) {
-				nsc.InstantiateFunction();			//实例化脚本
+				nsc.Instance = nsc.InstantiateScript();				//实例化脚本
 				nsc.Instance->m_Entity = Entity{ entity, this };	//设置脚本所属的实体
-				nsc.OnCreateFunction(nsc.Instance);	//调用脚本的OnCreate函数
+
+				nsc.Instance->OnCreate();	//调用脚本的OnCreate函数
 			}
-			nsc.OnUpdateFunction(nsc.Instance, ts);	//调用脚本的OnOpdate函数
+			nsc.Instance->OnUpdate(ts);		//调用脚本的OnOpdate函数
 		});
 
 		Camera* mainCamera = nullptr;	//主相机
@@ -48,7 +49,7 @@ namespace Hazel
 		auto view = m_Registry.view<TransformComponent, CameraComponent>();	//有Transform和Camera的所有实体
 
 		for (auto entity : view) {
-			auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
+			auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 
 			//找到主相机
 			if (camera.Primary) {
@@ -65,7 +66,7 @@ namespace Hazel
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 
 			for (auto entity : group) {
-				auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 				Renderer2D::DrawQuad(transform, sprite.Color);
 			}

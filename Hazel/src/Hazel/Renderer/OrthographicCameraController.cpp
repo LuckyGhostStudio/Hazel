@@ -17,24 +17,24 @@ namespace Hazel
 		HZ_PROFILE_FUNCTION();
 
 		//相机移动
-		if (Input::IsKeyPressed((int)HZ_KEY_A)) {		//左
+		if (Input::IsKeyPressed(HZ_KEY_A)) {		//左
 			m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed((int)HZ_KEY_D)) {	//右
+		else if (Input::IsKeyPressed(HZ_KEY_D)) {	//右
 			m_CameraPosition.x += m_CameraTranslationSpeed * ts;
 		}
-		if (Input::IsKeyPressed((int)HZ_KEY_W)) {		//上
+		if (Input::IsKeyPressed(HZ_KEY_W)) {		//上
 			m_CameraPosition.y += m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed((int)HZ_KEY_S)) {	//下
+		else if (Input::IsKeyPressed(HZ_KEY_S)) {	//下
 			m_CameraPosition.y -= m_CameraTranslationSpeed * ts;
 		}
 
 		if (m_Rotation) {
-			if (Input::IsKeyPressed((int)HZ_KEY_Q)) {
+			if (Input::IsKeyPressed(HZ_KEY_Q)) {
 				m_CameraRotation += m_CameraRotationSpeed * ts;
 			}
-			if (Input::IsKeyPressed((int)HZ_KEY_E)) {
+			if (Input::IsKeyPressed(HZ_KEY_E)) {
 				m_CameraRotation -= m_CameraRotationSpeed * ts;
 			}
 

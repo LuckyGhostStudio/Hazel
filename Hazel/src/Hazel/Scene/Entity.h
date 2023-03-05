@@ -71,5 +71,16 @@ namespace Hazel
 		}
 
 		operator bool() const { return m_EntityHandle != entt::null; }
+		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
+
+		bool operator==(const Entity& other)
+		{
+			return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene;	//实体id相同 && 所属场景相同
+		}
+
+		bool operator!=(const Entity& other)
+		{
+			return !(*this == other);	//实体不相等
+		}
 	};
 }
