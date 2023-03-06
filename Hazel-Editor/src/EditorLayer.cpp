@@ -35,20 +35,20 @@ namespace Hazel
 
 			void OnUpdate(Timestep ts)
 			{
-				auto& transform = GetComponent<TransformComponent>().Transform;
+				auto& position = GetComponent<TransformComponent>().Position;
 				float speed = 5.0f;
 
 				if (Input::IsKeyPressed(KeyCode::W)) {
-					transform[3][1] += speed * ts;
+					position.y += speed * ts;
 				}
 				if (Input::IsKeyPressed(KeyCode::S)) {
-					transform[3][1] -= speed * ts;
+					position.y -= speed * ts;
 				}
 				if (Input::IsKeyPressed(KeyCode::A)) {
-					transform[3][0] -= speed * ts;
+					position.x -= speed * ts;
 				}
 				if (Input::IsKeyPressed(KeyCode::D)) {
-					transform[3][0] += speed * ts;
+					position.x += speed * ts;
 				}
 			}
 
@@ -154,7 +154,7 @@ namespace Hazel
 
 		m_SceneHierarchyPanel.OnImGuiRender();
 
-		ImGui::Begin("Settings");
+		ImGui::Begin("Stats");
 
 		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
@@ -162,21 +162,6 @@ namespace Hazel
 		ImGui::Text("Quad: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-		if (m_SquareEntity) {	//实体不为空
-			ImGui::Separator();	//分隔符
-			ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());			//正方形名字
-			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;	//正方形颜色
-			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));	//颜色编辑UI
-			ImGui::Separator();
-		}
-
-		auto& camera = m_CameraEntity.GetComponent<CameraComponent>().Camera;
-		float size = camera.GetSize();
-		ImGui::Text("Main Camera");
-		if (ImGui::DragFloat("Size", &size)) {
-			camera.SetSize(size);
-		}
 
 		ImGui::End();
 

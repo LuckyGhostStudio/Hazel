@@ -212,6 +212,10 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 ### 54. 相机组件UI
 
+### 55. Sprite Renderer组件UI
+
+### 56. Transform组件UI
+
 ## 文件说明
 
 ### Hazel 项目
