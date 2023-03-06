@@ -172,10 +172,10 @@ namespace Hazel
 		}
 
 		auto& camera = m_CameraEntity.GetComponent<CameraComponent>().Camera;
-		float size = camera.GetOrthographicSize();
+		float size = camera.GetSize();
 		ImGui::Text("Main Camera");
 		if (ImGui::DragFloat("Size", &size)) {
-			camera.SetOrthographicSize(size);
+			camera.SetSize(size);
 		}
 
 		ImGui::End();
