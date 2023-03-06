@@ -30,8 +30,9 @@ namespace Hazel
 		T& AddComponent(Args&&... args)
 		{
 			HZ_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");	//该组件已存在
-
-			return m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);	//向m_Scene场景的实体注册表添加T类型组件
+			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);	//向m_Scene场景的实体注册表添加T类型组件
+			m_Scene->OnComponentAdded<T>(*this, component);	//m_Scene向this实体添加T组件时调用
+			return component;
 		}
 
 		/// <summary>
@@ -71,6 +72,7 @@ namespace Hazel
 		}
 
 		operator bool() const { return m_EntityHandle != entt::null; }
+		operator entt::entity() const { return m_EntityHandle; }
 		operator uint32_t() const { return (uint32_t)m_EntityHandle; }
 
 		bool operator==(const Entity& other)

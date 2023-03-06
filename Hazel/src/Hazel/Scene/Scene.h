@@ -20,6 +20,15 @@ namespace Hazel
 		entt::registry m_Registry;		//实体注册表：实体id集合（unsigned int集合）
 		uint32_t m_ViewportWidth = 0;	//场景视口宽
 		uint32_t m_ViewportHeight = 0;	//场景视口高
+	private:
+		/// <summary>
+		/// entity添加T组件时调用
+		/// </summary>
+		/// <typeparam name="T">组件类型</typeparam>
+		/// <param name="entity">实体</param>
+		/// <param name="component">组件</param>
+		template<typename T>
+		void OnComponentAdded(Entity entity, T& component);
 	public:
 		Scene();
 		~Scene();
@@ -30,6 +39,12 @@ namespace Hazel
 		/// <param name="name">实体名</param>
 		/// <returns>实体</returns>
 		Entity CreateEntity(const std::string& name = std::string());
+
+		/// <summary>
+		/// 销毁实体
+		/// </summary>
+		/// <param name="entity">实体</param>
+		void DestroyEntity(Entity entity);
 
 		/// <summary>
 		/// 更新：每帧调用
