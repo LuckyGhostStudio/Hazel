@@ -15,6 +15,7 @@ namespace Hazel
 	{
 	private:
 		friend class Entity;				//友元类Entity
+		friend class SceneSerializer;
 		friend class SceneHierarchyPanel;
 
 		entt::registry m_Registry;		//实体注册表：实体id集合（unsigned int集合）

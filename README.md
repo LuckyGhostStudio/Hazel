@@ -220,6 +220,8 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 ### 58. 优化UI样式和布局
 
+### 59. 序列化和反序列化场景
+
 ## 文件说明
 
 ### Hazel 项目
@@ -426,6 +428,10 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - ScriptableEntity.h
 
   可脚本化实体，所有本地脚本的基类。
+  
+- SceneSerializer.h/.cpp
+
+  场景序列化器，可序列化和反序列化场景。
 
 ### Hazel-Editor 项目
 

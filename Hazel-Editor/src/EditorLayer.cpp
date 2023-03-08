@@ -4,6 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Hazel/Scene/SceneSerializer.h"
+
 namespace Hazel
 {
 	EditorLayer::EditorLayer() :Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f) {}
@@ -18,7 +20,7 @@ namespace Hazel
 		m_Framebuffer = Framebuffer::Create(fbSpec);	//创建帧缓冲区
 
 		m_ActiveScene = CreateRef<Scene>();		//创建场景
-
+#if 0
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");	//创建正方形实体
 		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));	//添加SpriteRenderer组件
 
@@ -59,7 +61,7 @@ namespace Hazel
 		};
 
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();	//添加脚本组件 并 绑定CameraController脚本
-
+#endif
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
@@ -153,6 +155,14 @@ namespace Hazel
 			//菜单：File
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::MenuItem("Serialize")) {		//菜单项：序列化（保存场景）
+					SceneSerializer serializer(m_ActiveScene);				//m_ActiveScene场景序列化器
+					serializer.Serialize("asserts/scenes/Example.hazel");	//序列化
+				}
+				if (ImGui::MenuItem("Deserialize")) {	//菜单项：反序列化（加载场景）
+					SceneSerializer serializer(m_ActiveScene);				//m_ActiveScene场景序列化器
+					serializer.Deserialize("asserts/scenes/Example.hazel");	//反序列化
+				}
 				if (ImGui::MenuItem("Exit")) {	//菜单项：退出
 					Application::GetInstance().Close();	//退出程序
 				}
