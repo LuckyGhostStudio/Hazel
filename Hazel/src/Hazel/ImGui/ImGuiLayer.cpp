@@ -10,6 +10,8 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
+#include "ImGuizmo.h"
+
 namespace Hazel
 {
 	ImGuiLayer::ImGuiLayer() :Layer("ImGuiLayer")
@@ -24,8 +26,6 @@ namespace Hazel
 
 	void ImGuiLayer::OnAttach()
 	{
-		HZ_PROFILE_FUNCTION();
-
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -65,8 +65,6 @@ namespace Hazel
 
 	void ImGuiLayer::OnDetach()
 	{
-		HZ_PROFILE_FUNCTION();
-
 		//关闭ImGui 销毁上下文
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
@@ -85,18 +83,15 @@ namespace Hazel
 
 	void ImGuiLayer::Begin()
 	{
-		HZ_PROFILE_FUNCTION();
-
 		//开启新帧
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();	//Gizmo新帧
 	}
 
 	void ImGuiLayer::End()
 	{
-		HZ_PROFILE_FUNCTION();
-
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::GetInstance();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());	//设置窗口大小

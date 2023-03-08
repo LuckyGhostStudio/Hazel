@@ -96,6 +96,20 @@ namespace Hazel
 		}
 	}
 
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = m_Registry.view<CameraComponent>();	//返回有Camera组件的实体
+		for (auto entity : view) {
+			const auto& camera = view.get<CameraComponent>(entity);	//Camera组件
+			//主相机
+			if (camera.Primary) {
+				return Entity{ entity, this };	//相机实体
+			}
+		}
+
+		return {};
+	}
+
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{

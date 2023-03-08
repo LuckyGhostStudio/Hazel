@@ -30,6 +30,8 @@ namespace Hazel
 
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 
+		int m_GizmoType = -1;	//Gizmo操作类型 -1无 0平移 1旋转 2缩放
+
 		SceneHierarchyPanel m_SceneHierarchyPanel;	//场景对象层次面板
 	public:
 		EditorLayer();

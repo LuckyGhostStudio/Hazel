@@ -20,6 +20,7 @@ IncludeDir["glm"] = "Hazel/vendor/glm"
 IncludeDir["stb_image"] = "Hazel/vendor/stb_image"
 IncludeDir["entt"] = "Hazel/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Hazel/vendor/yaml-cpp/include"
+IncludeDir["ImGuizmo"] = "Hazel/vendor/ImGuizmo"
 
 group "Dependencies"
 	include "Hazel/vendor/GLFW"
@@ -49,7 +50,9 @@ project "Hazel"
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
-		"%{prj.name}/vendor/glm/glm/**.inl"
+		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp"
 	}
 
 	defines
@@ -67,7 +70,8 @@ project "Hazel"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
@@ -78,6 +82,9 @@ project "Hazel"
 		"yaml-cpp",
 		"opengl32.lib"
 	}
+
+	filter "files:Hazel/vendor/ImGuizmo/**.cpp"
+	flags {"NoPCH"}		--该cpp文件不使用预编译头文件
 
 	filter "system:windows"
         systemversion "latest"	--sdk�汾
@@ -179,7 +186,8 @@ project "Hazel-Editor"
 		"Hazel/src",
 		"Hazel/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links

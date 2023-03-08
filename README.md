@@ -224,6 +224,8 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 ### 60. 打开和保存场景文件
 
+### 61. Transform Gizmo
+
 ## 文件说明
 
 ### Hazel 项目
@@ -354,6 +356,12 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - ImGuiLayer.h/.cpp
 
   ImGui层，渲染ImGui。
+
+##### Math
+
+- Math.h/.cpp
+
+  数学库，包括分解transform矩阵函数。
 
 ##### Renderer
 
