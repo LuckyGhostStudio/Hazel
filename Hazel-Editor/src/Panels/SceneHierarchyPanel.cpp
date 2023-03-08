@@ -17,6 +17,7 @@ namespace Hazel
 	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
 	{
 		m_Context = context;
+		m_SelectionContext = {};	//置空旧场景被选中物体
 	}
 	
 	void SceneHierarchyPanel::OnImGuiRender()

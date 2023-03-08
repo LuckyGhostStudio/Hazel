@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Event.h"
+#include "Hazel/Core/MouseButtonCodes.h"
 
 namespace Hazel
 {
 	/// <summary>
 	/// 鼠标移动事件
 	/// </summary>
-	class HAZEL_API MouseMovedEvent :public Event
+	class MouseMovedEvent :public Event
 	{
 	private:
 		float m_MouseX;		//鼠标 x 坐标
@@ -32,7 +33,7 @@ namespace Hazel
 	/// <summary>
 	/// 鼠标滚轮滚动事件
 	/// </summary>
-	class HAZEL_API MouseScrolledEvent :public Event
+	class MouseScrolledEvent :public Event
 	{
 	private:
 		float m_XOffset;	//鼠标水平滚动偏移量
@@ -57,14 +58,14 @@ namespace Hazel
 	/// <summary>
 	/// 鼠标按钮事件
 	/// </summary>
-	class HAZEL_API MouseButtonEvent :public Event
+	class MouseButtonEvent :public Event
 	{
 	protected:
-		int m_Button;	//鼠标按钮
+		MouseCode m_Button;	//鼠标按钮
 
-		MouseButtonEvent(int button) :m_Button(button) {}
+		MouseButtonEvent(const MouseCode button) :m_Button(button) {}
 	public:
-		inline int GetMouseButton() const { return m_Button; }
+		inline MouseCode GetMouseButton() const { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)	//鼠标事件 | 输入事件
 	};
@@ -72,10 +73,10 @@ namespace Hazel
 	/// <summary>
 	/// 鼠标按钮按下事件
 	/// </summary>
-	class HAZEL_API MouseButtonPressedEvent :public MouseButtonEvent
+	class MouseButtonPressedEvent :public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(int button) :MouseButtonEvent(button) {}
+		MouseButtonPressedEvent(const MouseCode button) :MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{
@@ -90,10 +91,10 @@ namespace Hazel
 	/// <summary>
 	/// 鼠标按钮抬起事件
 	/// </summary>
-	class HAZEL_API MouseButtonReleasedEvent :public MouseButtonEvent
+	class MouseButtonReleasedEvent :public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(int button) :MouseButtonEvent(button) {}
+		MouseButtonReleasedEvent(const MouseCode button) :MouseButtonEvent(button) {}
 
 		std::string ToString() const override
 		{

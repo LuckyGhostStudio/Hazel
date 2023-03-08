@@ -7,7 +7,7 @@ namespace Hazel
 	/// <summary>
 	/// 窗口改变大小事件
 	/// </summary>
-	class HAZEL_API WindowResizeEvent :public Event
+	class WindowResizeEvent :public Event
 	{
 	private:
 		unsigned int m_Width;	//被调整到的窗口宽
@@ -32,7 +32,7 @@ namespace Hazel
 	/// <summary>
 	/// 窗口关闭事件
 	/// </summary>
-	class HAZEL_API WindowCloseEvent :public Event
+	class WindowCloseEvent :public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -44,7 +44,7 @@ namespace Hazel
 	/// <summary>
 	/// App时钟事件
 	/// </summary>
-	class HAZEL_API AppTickEvent :public Event
+	class AppTickEvent :public Event
 	{
 	public:
 		AppTickEvent() {}
@@ -56,7 +56,7 @@ namespace Hazel
 	/// <summary>
 	/// App更新事件
 	/// </summary>
-	class HAZEL_API AppUpdateEvent :public Event
+	class AppUpdateEvent :public Event
 	{
 	public:
 		AppUpdateEvent() {}
@@ -68,7 +68,7 @@ namespace Hazel
 	/// <summary>
 	/// App渲染事件
 	/// </summary>
-	class HAZEL_API AppRenderEvent :public Event
+	class AppRenderEvent :public Event
 	{
 	public:
 		AppRenderEvent() {}

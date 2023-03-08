@@ -49,7 +49,7 @@ namespace Hazel
 	/// <summary>
 	/// ÊÂ¼şÀà
 	/// </summary>
-	class HAZEL_API Event
+	class Event
 	{
 		friend class EventDispatcher;
 	public:
