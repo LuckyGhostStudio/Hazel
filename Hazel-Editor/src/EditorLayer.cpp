@@ -25,6 +25,8 @@ namespace Hazel
 		m_Framebuffer = Framebuffer::Create(fbSpec);	//创建帧缓冲区
 
 		m_ActiveScene = CreateRef<Scene>();		//创建场景
+
+		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);	//创建编辑器相机
 #if 0
 		m_SquareEntity = m_ActiveScene->CreateEntity("Square");	//创建正方形实体
 		m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));	//添加SpriteRenderer组件
@@ -82,23 +84,24 @@ namespace Hazel
 			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);	//重置帧缓冲区大小
-			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);				//重置相机大小
+			//m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);				//重置相机大小
+			
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);				//设置视口大小
 
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);	//重置视口大小
 		}
 
 		if (m_ViewportFocused) {	//视口被聚焦
-			m_CameraController.OnUpdate(ts);	//更新相机控制器
+			//m_CameraController.OnUpdate(ts);	//更新相机控制器
 		}
+			m_EditorCamera.OnUpdate(ts);	//更新编辑器相机
 
 		Renderer2D::ResetStats();	//重置统计数据
 		m_Framebuffer->Bind();		//绑定帧缓冲区
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });	//设置清屏颜色
 		RenderCommand::Clear();										//清除
 
-		//Renderer2D::BeginScene(m_CameraController.GetCamera());		//开始渲染场景
-		m_ActiveScene->OnUpdate(ts);	//更新场景
-		//Renderer2D::EndScene();			//结束渲染场景
+		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);	//编辑器更新场景
 
 		m_Framebuffer->Unbind();	//解除绑定帧缓冲区
 	}
@@ -205,7 +208,7 @@ namespace Hazel
 		m_ViewportFocused = ImGui::IsWindowFocused();	//当前窗口被聚焦
 		m_ViewportHovered = ImGui::IsWindowHovered();	//鼠标悬停在当前窗口
 
-		Application::GetInstance().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);	//阻止ImGui事件
+		Application::GetInstance().GetImGuiLayer()->BlockEvents(/*!m_ViewportFocused && */!m_ViewportHovered);	//阻止ImGui事件
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();			//Gui面板大小
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };			//视口大小
@@ -223,11 +226,15 @@ namespace Hazel
 			float windowHeight = (float)ImGui::GetWindowHeight();	//视口高
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);	//设置绘制区域
 
-			//Camera
-			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();				//主相机实体
-			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;	//相机
-			const glm::mat4& cameraProjection = camera.GetProjection();					//投影矩阵
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());	//视图矩阵
+			//运行时相机
+			//auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();				//主相机实体
+			//const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;	//相机
+			//const glm::mat4& cameraProjection = camera.GetProjection();					//投影矩阵
+			//glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());	//视图矩阵
+
+			//编辑器相机
+			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();	//投影矩阵
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();				//视图矩阵
 
 			//被选中物体
 			auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();	//Transform组件
@@ -268,7 +275,8 @@ namespace Hazel
 
 	void EditorLayer::OnEvent(Event& event)
 	{
-		m_CameraController.OnEvent(event);	//调用相机事件函数
+		//m_CameraController.OnEvent(event);	//调用相机事件函数
+		m_EditorCamera.OnEvent(event);	//编辑器相机事件
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(HZ_BIND_EVENT_FUNC(EditorLayer::OnKeyPressed));	//调用按键按下事件

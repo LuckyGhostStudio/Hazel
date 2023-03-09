@@ -226,6 +226,8 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 ### 61. Transform Gizmo
 
+### 62. EditorCamera
+
 ## 文件说明
 
 ### Hazel 项目
@@ -416,6 +418,10 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 - Framebuffer.h/.cpp
 
   帧缓冲区抽象接口。
+  
+- EditorCamera.h/.cpp
+
+  编辑器相机，编辑器内场景渲染相机，可自由移动，用来查看场景，不同于相机组件。
 
 ##### Scene
 

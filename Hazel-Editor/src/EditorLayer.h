@@ -2,6 +2,7 @@
 
 #include "Hazel.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Hazel/Renderer/EditorCamera.h"
 
 namespace Hazel
 {
@@ -20,7 +21,9 @@ namespace Hazel
 
 		Ref<Texture2D> m_CheckerboardTexture;	//棋盘纹理
 
-		Ref<Scene> m_ActiveScene;	//活动场景
+		Ref<Scene> m_ActiveScene;		//活动场景
+		EditorCamera m_EditorCamera;	//编辑器相机
+
 		Entity m_SquareEntity;		//正方形实体
 		Entity m_CameraEntity;		//相机实体
 

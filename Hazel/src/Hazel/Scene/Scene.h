@@ -3,6 +3,7 @@
 #include "entt.hpp"
 
 #include "Hazel/Core/Timestep.h"
+#include "Hazel/Renderer/EditorCamera.h"
 
 namespace Hazel
 {
@@ -48,10 +49,17 @@ namespace Hazel
 		void DestroyEntity(Entity entity);
 
 		/// <summary>
-		/// 更新：每帧调用
+		/// 编辑器更新：每帧调用
 		/// </summary>
 		/// <param name="ts">帧间隔</param>
-		void OnUpdate(Timestep ts);
+		/// <param name="camera">编辑器相机</param>
+		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
+
+		/// <summary>
+		/// 运行时更新：每帧调用
+		/// </summary>
+		/// <param name="ts">帧间隔</param>
+		void OnUpdateRuntime(Timestep ts);
 
 		/// <summary>
 		/// 重置视口大小：视口改变时调用

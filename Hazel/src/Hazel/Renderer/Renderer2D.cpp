@@ -124,6 +124,19 @@ namespace Hazel
 		s_Data.TextureShader->Bind();		//绑定Texture着色器
 		s_Data.TextureShader->SetMat4("u_ViewProjectionMatrix", viewProj);	//设置vp矩阵
 
+		//开始批处理
+		s_Data.QuadIndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureSlotIndex = 1;
+	}
+
+	void Renderer2D::BeginScene(const EditorCamera& camera)
+	{
+		s_Data.TextureShader->Bind();		//绑定Texture着色器
+		s_Data.TextureShader->SetMat4("u_ViewProjectionMatrix", camera.GetViewProjection());	//设置vp矩阵
+
+		//开始批处理
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 

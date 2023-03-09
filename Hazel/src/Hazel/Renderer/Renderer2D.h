@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "SubTexture2D.h"
 #include "Hazel/Renderer/Camera.h"
+#include "Hazel/Renderer/EditorCamera.h"
 
 namespace Hazel
 {
@@ -18,6 +19,8 @@ namespace Hazel
 		static void Shutdown();
 
 		static void BeginScene(const Camera& camera, const glm::mat4& transform);
+
+		static void BeginScene(const EditorCamera& camera);
 		
 		/// <summary>
 		/// 开始渲染场景：设置场景参数

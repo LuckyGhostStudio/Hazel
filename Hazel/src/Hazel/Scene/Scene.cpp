@@ -32,8 +32,23 @@ namespace Hazel
 	{
 		m_Registry.destroy(entity);	//将实体从注册表移除
 	}
+
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
+		for (auto entity : group) {
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+		}
+
+		Renderer2D::EndScene();
+	}
 	
-	void Scene::OnUpdate(Timestep ts)
+	void Scene::OnUpdateRuntime(Timestep ts)
 	{
 		//遍历所有拥有脚本组件的实体，调用each内的函数
 		m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nsc)
