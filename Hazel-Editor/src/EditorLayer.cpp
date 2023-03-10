@@ -20,6 +20,7 @@ namespace Hazel
 		m_CheckerboardTexture = Texture2D::Create("asserts/textures/Checkerboard.png");			//创建纹理
 
 		FramebufferSpecification fbSpec;
+		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);	//创建帧缓冲区
@@ -213,7 +214,7 @@ namespace Hazel
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();			//Gui面板大小
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };			//视口大小
 
-		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();		//颜色缓冲区ID
+		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();		//颜色缓冲区0 ID
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));	//视口Image
 
 		//Gizmo
