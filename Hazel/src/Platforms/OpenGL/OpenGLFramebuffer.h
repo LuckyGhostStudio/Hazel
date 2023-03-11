@@ -31,6 +31,15 @@ namespace Hazel
 		/// <param name="width">宽</param>
 		/// <param name="height">高</param>
 		virtual void Resize(uint32_t width, uint32_t height) override;
+
+		/// <summary>
+		/// 读取像素
+		/// </summary>
+		/// <param name="attachmentIndex">颜色缓冲区id</param>
+		/// <param name="x">x坐标</param>
+		/// <param name="y">y坐标</param>
+		/// <returns>像素数据：输出到attachmentIndex颜色缓冲区的数据</returns>
+		virtual int ReadPixel(uint32_t attachmentIndex, int x, int y) override;
 		
 		
 		/// <summary>

@@ -10,7 +10,10 @@ namespace Hazel
 	enum class FramebufferTextureFormat
 	{
 		None = 0,
+
 		RGBA8,				//颜色
+		RED_INTEGER,
+
 		DEFPTH24STENCIL8,	//深度模板
 
 		Depth = DEFPTH24STENCIL8	//默认值
@@ -74,6 +77,15 @@ namespace Hazel
 		/// <param name="width">宽</param>
 		/// <param name="height">高</param>
 		virtual void Resize(uint32_t width, uint32_t height) = 0;
+
+		/// <summary>
+		/// 读取像素
+		/// </summary>
+		/// <param name="attachmentIndex">颜色缓冲区id</param>
+		/// <param name="x">x坐标</param>
+		/// <param name="y">y坐标</param>
+		/// <returns>像素数据：输出到attachmentIndex颜色缓冲区的数据</returns>
+		virtual int ReadPixel(uint32_t attachmentIndex, int x, int y) = 0;
 
 		/// <summary>
 		/// 创建帧缓冲区
