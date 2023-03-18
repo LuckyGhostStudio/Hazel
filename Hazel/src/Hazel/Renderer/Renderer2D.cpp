@@ -19,6 +19,8 @@ namespace Hazel
 		glm::vec2 TexCoord;	//纹理坐标
 		float TexIndex;		//纹理索引
 		float TilingFactor;	//纹理平铺因子
+
+		int EntityID;
 	};
 
 	/// <summary>
@@ -66,6 +68,7 @@ namespace Hazel
 			{ShaderDataType::Float2, "a_TexCoord"},		//纹理坐标
 			{ShaderDataType::Float, "a_TexIndex"},		//纹理索引
 			{ShaderDataType::Float, "a_TilingFactor"},	//纹理平铺因子
+			{ShaderDataType::Int, "a_EntityID"},		//实体ID
 		});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);	//添加VBO到VAO
 
@@ -267,7 +270,7 @@ namespace Hazel
 		s_Data.Stats.QuadCount++;	//四边形个数++
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
 		//索引个数超过最大索引数
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
@@ -287,6 +290,7 @@ namespace Hazel
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -295,7 +299,7 @@ namespace Hazel
 		s_Data.Stats.QuadCount++;	//四边形个数++
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		int quadVertexCount = 4;
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -331,6 +335,7 @@ namespace Hazel
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -485,6 +490,11 @@ namespace Hazel
 		s_Data.QuadIndexCount += 6;	//索引个数增加
 
 		s_Data.Stats.QuadCount++;	//四边形个数++
+	}
+
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
+	{
+		DrawQuad(transform, src.Color, entityID);
 	}
 
 	Renderer2D::Statistics Renderer2D::GetStats()

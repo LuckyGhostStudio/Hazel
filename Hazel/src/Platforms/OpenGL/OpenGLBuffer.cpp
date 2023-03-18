@@ -15,7 +15,7 @@ namespace Hazel
 
 		glCreateBuffers(1, &m_RendererID);	//创建缓冲区
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);	//绑定顶点缓冲
-		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);	//动态绑定顶点数据
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);	//动态绑定顶点数据
 	}
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)

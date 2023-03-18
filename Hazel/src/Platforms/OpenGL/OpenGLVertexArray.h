@@ -10,9 +10,10 @@ namespace Hazel
 	class OpenGLVertexArray :public VertexArray
 	{
 	private:
-		uint32_t m_RendererID;										//顶点数组id
+		uint32_t m_RendererID;							//顶点数组id
 		std::vector<Ref<VertexBuffer>> m_VertexBuffers;	//绑定在顶点数组的VertexBuffer列表
 		Ref<IndexBuffer> m_IndexBuffer;					//绑定在顶点数组的IndexBuffer
+		uint32_t m_VertexBufferIndex = 0;
 	public:
 		OpenGLVertexArray();
 

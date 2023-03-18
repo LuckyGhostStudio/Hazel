@@ -27,6 +27,8 @@ namespace Hazel
 		Entity m_SquareEntity;		//正方形实体
 		Entity m_CameraEntity;		//相机实体
 
+		Entity m_HoveredEntity;		//被鼠标悬停的实体
+
 		bool m_ViewportFocused = false;				//视口被聚焦
 		bool m_ViewportHovered = false;				//鼠标悬停在视口
 

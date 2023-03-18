@@ -71,18 +71,64 @@ namespace Hazel
 		//设置顶点缓冲区布局
 		const auto& layout = vertexBuffer->GetLayout();			//顶点缓冲区布局
 
-		uint32_t index = 0;
-		for (const auto& element : layout) {
-			glEnableVertexAttribArray(index);					//启用顶点属性
+		for (const auto& element : layout)
+		{
+			switch (element.Type)
+			{
+			case ShaderDataType::Float:
+			case ShaderDataType::Float2:
+			case ShaderDataType::Float3:
+			case ShaderDataType::Float4:
+			{
+				glEnableVertexAttribArray(m_VertexBufferIndex);		//启用顶点属性
 
-			glVertexAttribPointer(index,						//顶点属性位置编号
-				element.GetComponentCount(),					//顶点属性数据个数
-				ShaderDataTypeToOpenGLBaseType(element.Type), 	//数据类型
-				element.Normalized ? GL_TRUE : GL_FALSE, 		//是否标准化
-				layout.GetStride(), 							//顶点大小（字节）
-				(const void*)element.Offset);					//顶点属性偏移量（字节）
+				glVertexAttribPointer(m_VertexBufferIndex,			//顶点属性位置编号
+					element.GetComponentCount(),					//顶点属性数据个数
+					ShaderDataTypeToOpenGLBaseType(element.Type), 	//数据类型
+					element.Normalized ? GL_TRUE : GL_FALSE, 		//是否标准化
+					layout.GetStride(), 							//顶点大小（字节）
+					(const void*)element.Offset);					//顶点属性偏移量（字节）
 
-			index++;
+				m_VertexBufferIndex++;
+				break;
+			}
+			case ShaderDataType::Int:
+			case ShaderDataType::Int2:
+			case ShaderDataType::Int3:
+			case ShaderDataType::Int4:
+			case ShaderDataType::Bool:
+			{
+				glEnableVertexAttribArray(m_VertexBufferIndex);
+				glVertexAttribIPointer(m_VertexBufferIndex,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
+					layout.GetStride(),
+					(const void*)element.Offset);
+
+				m_VertexBufferIndex++;
+				break;
+			}
+			case ShaderDataType::Mat3:
+			case ShaderDataType::Mat4:
+			{
+				uint8_t count = element.GetComponentCount();
+				for (uint8_t i = 0; i < count; i++)
+				{
+					glEnableVertexAttribArray(m_VertexBufferIndex);
+					glVertexAttribPointer(m_VertexBufferIndex,
+						count,
+						ShaderDataTypeToOpenGLBaseType(element.Type),
+						element.Normalized ? GL_TRUE : GL_FALSE,
+						layout.GetStride(),
+						(const void*)(element.Offset + sizeof(float) * count * i));
+					glVertexAttribDivisor(m_VertexBufferIndex, 1);
+					m_VertexBufferIndex++;
+				}
+				break;
+			}
+			default:
+				HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+			}
 		}
 
 		m_VertexBuffers.push_back(vertexBuffer);	//添加VBO到列表

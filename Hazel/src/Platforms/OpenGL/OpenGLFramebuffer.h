@@ -41,7 +41,13 @@ namespace Hazel
 		/// <returns>像素数据：输出到attachmentIndex颜色缓冲区的数据</returns>
 		virtual int ReadPixel(uint32_t attachmentIndex, int x, int y) override;
 		
-		
+		/// <summary>
+		/// 清除帧缓冲区附件
+		/// </summary>
+		/// <param name="attachmentIndex">颜色缓冲区id</param>
+		/// <param name="value">清除值</param>
+		virtual void ClearAttachment(uint32_t attachmentIndex, int value) override;
+
 		/// <summary>
 		/// 返回颜色缓冲区ID
 		/// </summary>
