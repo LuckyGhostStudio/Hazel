@@ -232,6 +232,8 @@ Hazel Engine is a simple Game Engine based on OpenGL and C++.
 
 ### 64. 获取鼠标位置的帧缓冲区像素
 
+### 65. 鼠标点击选择物体
+
 ## 文件说明
 
 ### Hazel 项目

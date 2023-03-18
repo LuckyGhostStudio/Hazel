@@ -316,6 +316,7 @@ namespace Hazel
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(HZ_BIND_EVENT_FUNC(EditorLayer::OnKeyPressed));	//调用按键按下事件
+		dispatcher.Dispatch<MouseButtonPressedEvent>(HZ_BIND_EVENT_FUNC(EditorLayer::OnMouseButtonPressed));	//调用鼠标按键按下事件
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -350,16 +351,29 @@ namespace Hazel
 		//Gizmo快捷键
 		switch (e.GetKeyCode())
 		{
-		case Key::G:
-			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;	//平移
-			break;
-		case Key::R:
-			m_GizmoType = ImGuizmo::OPERATION::ROTATE;		//旋转
-			break;
-		case Key::S:
-			m_GizmoType = ImGuizmo::OPERATION::SCALE;		//缩放
-			break;
+			case Key::G:
+				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;	//平移
+				break;
+			case Key::R:
+				m_GizmoType = ImGuizmo::OPERATION::ROTATE;		//旋转
+				break;
+			case Key::S:
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;		//缩放
+				break;
 		}
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		//鼠标左键按下
+		if (e.GetMouseButton() == Mouse::ButtonLeft) {
+			//鼠标在视口内 Gizmo控制没结束
+			if (m_ViewportHovered && !ImGuizmo::IsOver()) {
+				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);	//设置被选中物体
+			}
+		}
+
+		return false;
 	}
 
 	void EditorLayer::NewScene()

@@ -92,5 +92,12 @@ namespace Hazel
 		/// <param name="e">按键按下事件</param>
 		/// <returns>处理结果</returns>
 		bool OnKeyPressed(KeyPressedEvent& e);
+
+		/// <summary>
+		/// 鼠标按钮按下时调用
+		/// </summary>
+		/// <param name="e">鼠标按钮按下事件</param>
+		/// <returns>处理结果</returns>
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 	};
 }

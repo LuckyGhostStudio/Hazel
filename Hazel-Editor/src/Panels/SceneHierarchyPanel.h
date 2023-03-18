@@ -52,5 +52,11 @@ namespace Hazel
 		/// </summary>
 		/// <returns>被选中物体</returns>
 		Entity GetSelectedEntity() const { return m_SelectionContext; }
+
+		/// <summary>
+		/// 设置被选中物体
+		/// </summary>
+		/// <param name="entity">被选中物体</param>
+		void SetSelectedEntity(Entity entity);
 	};
 }
